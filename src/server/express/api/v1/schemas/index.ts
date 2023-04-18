@@ -3,4 +3,4 @@ export { default as ErrorSchema } from "./Error";
 export { default as GenericSchema } from "./Generic";
 export { default as HealthSchema } from "./Health";
 export { default as MetadataSchema } from "./Metadata";
-export { default as UserGroupSchema } from "./UserGroup";
+export { default as UserGroupEntitySchema } from "./UserGroup";

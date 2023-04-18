@@ -17,6 +17,7 @@ import {
   GenericSchema,
   HealthSchema,
   MetadataSchema,
+  UserGroupEntitySchema,
 } from "./schemas";
 import { BearerScheme } from "./schemes";
 import { OpenAPI } from "@codrjs/models";
@@ -66,6 +67,7 @@ const settings: OpenAPIV3_1.Document = {
       ErrorSchema,
       GenericSchema,
       HealthSchema,
+      UserGroupEntitySchema,
       MetadataSchema,
     },
     securitySchemes: {

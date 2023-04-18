@@ -27,16 +27,20 @@ const UserGroupSchema: OpenAPIV3_1.SchemaObject = {
       type: "object",
       properties: {
         isAnonymous: {
-          type: "string",
+          type: "boolean",
+          default: false,
         },
         isDeleted: {
-          type: "string",
+          type: "boolean",
+          default: false,
         },
         isJoinable: {
-          type: "string",
+          type: "boolean",
+          default: false,
         },
         isPrivate: {
-          type: "string",
+          type: "boolean",
+          default: false,
         },
       },
     },
