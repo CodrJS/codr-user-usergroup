@@ -11,15 +11,23 @@ export const POST: Operation = [
     const util = new UserGroupUtility();
     util
       .create(req.user, req.body)
-      .then(res.status(200).json)
+      .then(resp => res.status(200).json(resp))
       .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
 
 // 3.0 specification
 POST.apiDoc = {
-  description: "Create a profile in the database.",
+  description: "Create a user group in the database.",
   tags: ["User Group Management"],
+  requestBody: {
+    required: true,
+    content: {
+      "application/json": {
+        schema: { $ref: "#/components/schemas/UserGroupEntitySchema" },
+      },
+    },
+  },
   responses: {
     "201": {
       description: R201.description,
@@ -30,7 +38,7 @@ POST.apiDoc = {
               details: {
                 type: "object",
                 properties: {
-                  profile: {
+                  userGroup: {
                     $ref: "#/components/schemas/UserGroupEntitySchema",
                   },
                 },
@@ -79,7 +87,7 @@ POST.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this profile."],
+                examples: ["User is forbidden from reading this user group."],
               },
               details: {
                 type: "object",
@@ -103,7 +111,7 @@ POST.apiDoc = {
               message: {
                 type: "string",
                 examples: [
-                  "An unexpected error occurred when trying to create a profile.",
+                  "An unexpected error occurred when trying to create a user group.",
                 ],
               },
               details: {

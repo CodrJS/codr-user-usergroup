@@ -1,7 +1,15 @@
 import { subject } from "@casl/ability";
-import { UserGroup, IUser, IUserGroup, Utility, Error, Response } from "@codrjs/models";
+import {
+  UserGroup,
+  IUser,
+  IUserGroup,
+  Utility,
+  Error,
+  Response,
+} from "@codrjs/models";
 import MongoUserGroup, { UserGroupDocument } from "../entities/UserGroup";
 import UserGroupAbility from "../entities/UserGroup.ability";
+import { Types } from "mongoose";
 
 export class UserGroupUtility extends Utility {
   // an internal method for getting the desired document to check against permissions
@@ -44,8 +52,11 @@ export class UserGroupUtility extends Utility {
     // if user can create user groups
     if (UserGroupAbility(token).can("create", "UserGroup")) {
       try {
-        // create user
-        const userGroup = await MongoUserGroup.create(obj);
+        // create user, set created by.
+        const userGroup = await MongoUserGroup.create({
+          ...obj,
+          createdBy: token._id as Types.ObjectId,
+        });
         return new Response({
           message: "OK",
           details: {
@@ -55,7 +66,8 @@ export class UserGroupUtility extends Utility {
       } catch (e) {
         throw new Error({
           status: 500,
-          message: "An unexpected error occurred when trying to create a user group.",
+          message:
+            "An unexpected error occurred when trying to create a user group.",
           details: e,
         });
       }
@@ -72,7 +84,9 @@ export class UserGroupUtility extends Utility {
     const userGroup = await this._getDocument<UserGroupDocument>(id);
 
     // check permissions
-    if (UserGroupAbility(token).can("update", subject("UserGroup", userGroup))) {
+    if (
+      UserGroupAbility(token).can("update", subject("UserGroup", userGroup))
+    ) {
       try {
         // update user.
         const userGroup = (await MongoUserGroup.findByIdAndUpdate(id, obj, {
@@ -89,7 +103,8 @@ export class UserGroupUtility extends Utility {
       } catch (e) {
         throw new Error({
           status: 500,
-          message: "An unexpected error occurred when trying to update a user group.",
+          message:
+            "An unexpected error occurred when trying to update a user group.",
           details: e,
         });
       }

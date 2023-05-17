@@ -9,14 +9,14 @@ const permissions: Types.Permissions<UserGroupDocument, "UserGroup"> = {
     can("manage", "UserGroup");
   },
   "codr:researcher": (user, { can }) => {
-    // can only read it's own UserGroup
+    // can only update and delete it's own UserGroup
     can("read", "UserGroup");
     can("create", "UserGroup");
-    can("update", "UserGroup", { userId: user._id });
-    can("delete", "UserGroup", { userId: user._id });
+    can("update", "UserGroup", { createdBy: user._id });
+    can("delete", "UserGroup", { createdBy: user._id });
   },
   "codr:annotator": (_user, { can }) => {
-    // can only read it's own UserGroup
+    // can only read UserGroups
     can("read", "UserGroup");
   },
 };

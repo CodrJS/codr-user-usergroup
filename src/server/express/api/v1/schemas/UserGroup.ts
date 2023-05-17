@@ -3,12 +3,12 @@ import type { OpenAPIV3_1 } from "openapi-types";
 const UserGroupSchema: OpenAPIV3_1.SchemaObject = {
   title: "User Group Entity Schema",
   allOf: [{ $ref: "#/components/schemas/BaseEntitySchema" }],
-  required: ["name", "username", "userId"],
+  required: ["name", "flags"],
   properties: {
     name: {
       type: "string",
     },
-    creatorId: {
+    createdBy: {
       type: "string",
     },
     teams: {

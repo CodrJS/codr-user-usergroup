@@ -10,7 +10,7 @@ import {
 export type UserGroupDocument = IUserGroup & AccessibleFieldsModel<IUserGroup>;
 const UserGroupSchema = new Schema<UserGroupDocument>(
   {
-    creatorId: {
+    createdBy: {
       required: true,
       index: true,
       type: SchemaTypes.ObjectId,

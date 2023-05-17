@@ -42,7 +42,7 @@ export const DELETE: Operation = [
 
 // 3.0 specification
 GET.apiDoc = {
-  description: "Get userGroup from database.",
+  description: "Get user group from database.",
   tags: ["User Group Management"],
   parameters: [
     {
@@ -114,7 +114,7 @@ GET.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this userGroup."],
+                examples: ["User is forbidden from reading this user group."],
               },
               details: {
                 type: "object",
@@ -207,7 +207,7 @@ PATCH.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this user."],
+                examples: ["User is forbidden from reading this user group."],
               },
               details: {
                 type: "object",
@@ -231,7 +231,7 @@ PATCH.apiDoc = {
               message: {
                 type: "string",
                 examples: [
-                  "An unexpected error occurred when trying to update a user.",
+                  "An unexpected error occurred when trying to update a user group.",
                 ],
               },
               details: {
@@ -325,7 +325,7 @@ DELETE.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this user."],
+                examples: ["User is forbidden from reading this user group."],
               },
               details: {
                 type: "object",
@@ -349,7 +349,7 @@ DELETE.apiDoc = {
               message: {
                 type: "string",
                 examples: [
-                  "An unexpected error occurred when trying to delete a user.",
+                  "An unexpected error occurred when trying to delete a user group.",
                 ],
               },
               details: {
