@@ -1,15 +1,20 @@
 import { subject } from "@casl/ability";
 import {
+  Types as CodrTypes,
   UserGroup,
-  IUser,
   IUserGroup,
   Utility,
   Error,
   Response,
 } from "@codrjs/models";
-import MongoUserGroup, { UserGroupDocument } from "../entities/UserGroup";
-import UserGroupAbility from "../entities/UserGroup.ability";
+import Mongo from "./Mongo";
 import { Types } from "mongoose";
+import { Abilities, Documents } from "@codrjs/mongo";
+
+// define types
+type Document = Documents.UserGroupDocument;
+type JwtPayload = CodrTypes.JwtPayload;
+const MongoUserGroup = Mongo.User.UserGroup;
 
 export class UserGroupUtility extends Utility {
   // an internal method for getting the desired document to check against permissions
@@ -28,12 +33,17 @@ export class UserGroupUtility extends Utility {
     }
   }
 
-  async get(token: IUser, id: string) {
+  async get(token: JwtPayload, id: string) {
     // get desired user document
-    const userGroup = await this._getDocument<UserGroupDocument>(id);
+    const userGroup = await this._getDocument<Document>(id);
 
     // if user and read the document, send it, else throw error
-    if (UserGroupAbility(token).can("read", subject("UserGroup", userGroup))) {
+    if (
+      Abilities.UserGroupAbility(token).can(
+        "read",
+        subject("UserGroup", userGroup)
+      )
+    ) {
       return new Response({
         message: "OK",
         details: {
@@ -48,9 +58,9 @@ export class UserGroupUtility extends Utility {
     }
   }
 
-  async create(token: IUser, obj: IUserGroup) {
+  async create(token: JwtPayload, obj: IUserGroup) {
     // if user can create user groups
-    if (UserGroupAbility(token).can("create", "UserGroup")) {
+    if (Abilities.UserGroupAbility(token).can("create", "UserGroup")) {
       try {
         // create user, set created by.
         const userGroup = await MongoUserGroup.create({
@@ -79,19 +89,22 @@ export class UserGroupUtility extends Utility {
     }
   }
 
-  async update(token: IUser, id: string, obj: Partial<IUserGroup>) {
+  async update(token: JwtPayload, id: string, obj: Partial<IUserGroup>) {
     // get desired user group document
-    const userGroup = await this._getDocument<UserGroupDocument>(id);
+    const userGroup = await this._getDocument<Document>(id);
 
     // check permissions
     if (
-      UserGroupAbility(token).can("update", subject("UserGroup", userGroup))
+      Abilities.UserGroupAbility(token).can(
+        "update",
+        subject("UserGroup", userGroup)
+      )
     ) {
       try {
         // update user.
         const userGroup = (await MongoUserGroup.findByIdAndUpdate(id, obj, {
           returnDocument: "after",
-        })) as UserGroupDocument;
+        })) as Document;
 
         // return true if succeeded, else throw error
         return new Response({
@@ -119,7 +132,7 @@ export class UserGroupUtility extends Utility {
   /**
    * @todo Hard or soft delete users?
    */
-  async delete(token: IUser, id: string) {
+  async delete(token: JwtPayload, id: string) {
     throw new Error({
       status: 500,
       message: "Method not implemented.",
